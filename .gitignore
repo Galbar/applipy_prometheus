@@ -1,0 +1,8 @@
+pyformance.egg-info
+.idea
+/.tox/
+/build/
+/dist/
+*.py[cod]
+.python-version
+.coverage

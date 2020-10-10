@@ -2,7 +2,7 @@ from aiohttp import web
 from applipy import Module, Config
 from applipy_inject import with_names
 from applipy_metrics import MetricsRegistry, MetricsModule
-from applipy_web import WebModule, UrlFormatter, PrefixUrlFormatter, View, Api, Context
+from applipy_web import WebModule, UrlFormatter, View, Api, Context
 from collections import defaultdict
 
 
@@ -105,12 +105,7 @@ class PrometheusModule(Module):
 
     def configure(self, bind, register) -> None:
         bind(View, PrometheusView, name='prometheus')
-        base_path = self._config.get('prometheus.endpoint', None)
-        if base_path:
-            bind(UrlFormatter, PrefixUrlFormatter(base_path), name='prometheus')
-        else:
-            bind(UrlFormatter, name='prometheus')
-
+        bind(UrlFormatter, name='prometheus')
         bind(Api, with_names(Api, 'prometheus'), name=self._config.get('prometheus.api_name', None))
 
     @classmethod
