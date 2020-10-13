@@ -19,11 +19,13 @@ setup(
         'Source': 'https://gitlab.com/applipy/applipy_prometheus',
     },
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
+        'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Topic :: Software Development :: Libraries',
     ],
     description='Exposes applipy metrics in prometheus format',
     long_description=long_description,
@@ -36,8 +38,8 @@ setup(
     data_files=[],
     python_requires='>=3.6',
     install_requires=[
-        'applipy_http~=0.13',
-        'applipy_metrics~=0.11',
+        'applipy_http>=1.0.0,<2.0.0',
+        'applipy_metrics>=1.0.0,<2.0.0',
     ],
     scripts=[],
 )
