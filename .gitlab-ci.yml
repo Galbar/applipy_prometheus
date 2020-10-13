@@ -48,5 +48,22 @@ publish-gitlab:
   only:
     refs:
       - master
-    # changes:
-    #   - applipy_prometheus/version.py
+    changes:
+      - applipy_prometheus/version.py
+
+
+publish-pypi:
+  stage: publish
+  image: python:latest
+  variables:
+    TWINE_USERNAME: __token__
+    TWINE_PASSWORD: "${PYPI_TOKEN}"
+  script:
+    - pip install twine
+    - python setup.py sdist bdist_wheel
+    - twine upload dist/*
+  only:
+    refs:
+      - master
+    changes:
+      - applipy_prometheus/version.py
