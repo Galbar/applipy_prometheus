@@ -25,7 +25,7 @@ class MetricsWrapper(EndpointWrapper):
             chrono = Chronometer()
             try:
                 _tags = tags.copy()
-                _tags['server'] = context.get('server.name', '')
+                _tags['server'] = context.get('server.name') or ''
                 context['metrics.tags'] = _tags
                 response = await handler(request, context)
                 status = response.status
