@@ -1,3 +1,11 @@
+[![pipeline status](https://gitlab.com/applipy/applipy_prometheus/badges/master/pipeline.svg)](https://gitlab.com/applipy/applipy_prometheus/-/pipelines?scope=branches&ref=master)
+[![coverage report](https://gitlab.com/applipy/applipy_prometheus/badges/master/coverage.svg)](https://gitlab.com/applipy/applipy_prometheus/-/graphs/master/charts)
+[![PyPI Status](https://img.shields.io/pypi/status/applipy-prometheus.svg)](https://pypi.org/project/applipy-prometheus/)
+[![PyPI Version](https://img.shields.io/pypi/v/applipy-prometheus.svg)](https://pypi.org/project/applipy-prometheus/)
+[![PyPI Python](https://img.shields.io/pypi/pyversions/applipy-prometheus.svg)](https://pypi.org/project/applipy-prometheus/)
+[![PyPI License](https://img.shields.io/pypi/l/applipy-prometheus.svg)](https://pypi.org/project/applipy-prometheus/)
+[![PyPI Format](https://img.shields.io/pypi/format/applipy-prometheus.svg)](https://pypi.org/project/applipy-prometheus/)
+
 # Applipy Prometheus Metrics
 
     pip install applipy_prometheus
