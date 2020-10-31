@@ -23,6 +23,7 @@ class MetricsWrapper(EndpointWrapper):
         @functools.wraps(handler)
         async def wrapper(request: web.Request, context: Context) -> web.StreamResponse:
             chrono = Chronometer()
+            status = 500
             try:
                 _tags = tags.copy()
                 _tags['server'] = context.get('server.name') or ''
