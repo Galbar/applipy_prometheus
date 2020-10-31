@@ -56,7 +56,25 @@ This library also comes with `MetricsWrapper`. It is an
 that can be bound to your APIs and will automatically measure the request time
 and store it as a summary with name `applipy_web_request_duration_seconds`.
 
-The wrapper has priority `100`.
+By default, the library will add the `MetricsWrapper` to the API that registers
+the endpoint `/metrics`, named `prometheus`, and the anonymous API, the one
+that is bound without named parameters. This functionalities can be disabled by
+setting the configuration values `prometheus.observe_prometheus_api` and
+`prometheus.observe_anonymous_api` to `false`.
+
+> A named API is one that is registered with named parameters like so: `bind(with_names(Api, 'api_name'))`.  
+> The anonymous API has no named parameters and is usually registered like so: `bind(Api)`.
+
+You can also tell the module to add the `MetricsWrapper` to you named APIs by
+setting the configuration value `prometheus.api_names` to a list containing the
+names of you named APIs.
+
+> In the case your API is registered with multiple parameter names, the one
+> that applies for the wrapper is the name for the `wrappers` parameter.
+
+The wrapper has
+[priority](https://gitlab.com/applipy/applipy_http/-/blob/master/docs/endpoint_wrapper.md#endpointwrapper-priority)
+`100`.
 
 The metrics are tagged by default with:
  - `method`: HTTP request method (i.e. `GET`, `POST`, etc.)
@@ -70,12 +88,25 @@ On top of that, a dictionary is added to the `Context` with the key
 
 ### Example
 
+#### Full prometheus module config
+
+All keys and their default values:
+
+```yaml
+prometheus:
+  server_name: null
+  observe_prometheus_api: true
+  observe_anonymous_api: true
+  api_names: []
+```
+
+#### Endpoint with custom metric tag
+
 ```python
+# myendpoint.py
+
 from aiohttp import web
-from applipy import Module
-from applipy_http import Api, HttpModule, Endpoint, EndpointWrapper, PathFormatter
-from applipy_inject import with_names
-from applipy_prometheus import MetricsWrapper
+from applipy_http import Endpoint
 
 
 class MyEndpoint(Endpoint):
@@ -84,18 +115,79 @@ class MyEndpoint(Endpoint):
         ctx['metrics.tags']['custom_tag'] = 'value'
         return web.Response(body='Ok')
 
+    def path(self):
+        return '/'
+```
+
+#### Usage with anonymous API
+
+```python
+# mymodule.py
+
+from applipy import Module
+from applipy_http import Api, HttpModule, Endpoint, PathFormatter
+from applipy_inject import with_names
+from applipy_prometheus import MetricsWrapper
+from myendpoint import MyEndpoint
+
+
+class MyModule(Module):
+    def configure(self, bind, register):
+        bind(Endpoint, MyEndpoint)
+        bind(PathFormatter)
+        bind(Api)
+
+    @classmethod
+    def depends_on(cls):
+        return HttpModule,
+```
+
+```yaml
+# dev.yaml
+
+app:
+  name: test
+  modules: [mymodule.MyModule]
+
+http:
+  host: 0.0.0.0
+  port: 8080
+```
+
+#### Usage with anonymous API
+
+```python
+# mymodule.py
+
+from applipy import Module
+from applipy_http import Api, HttpModule, Endpoint, PathFormatter
+from applipy_inject import with_names
+from applipy_prometheus import MetricsWrapper
+from myendpoint import MyEndpoint
+
 
 class MyModule(Module):
     def configure(self, bind, register):
         bind(Endpoint, MyEndpoint, name='myApi')
         bind(PathFormatter, name='myApi')
-
-        # Register the MetricsWrapper to my Api
-        bind(EndpointWrapper, MetricsWrapper, name='myApi')
-
         bind(with_names(Api, 'myApi'))
 
     @classmethod
     def depends_on(cls):
         return HttpModule,
+```
+
+```yaml
+# dev.yaml
+
+app:
+  name: test
+  modules: [mymodule.MyModule]
+
+http:
+  host: 0.0.0.0
+  port: 8080
+
+prometheus:
+  api_names: [myApi]
 ```
