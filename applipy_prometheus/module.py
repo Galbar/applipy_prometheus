@@ -9,7 +9,7 @@ from applipy_prometheus.wrapper import MetricsWrapper
 class PrometheusModule(Module):
 
     def __init__(self, config: Config) -> None:
-        self._config = config.get('prometheus')
+        self._config = config.get('prometheus', Config({}))
 
     def configure(self, bind, register) -> None:
         bind(Endpoint, PrometheusEndpoint, name='prometheus')
