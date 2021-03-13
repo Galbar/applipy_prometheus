@@ -154,7 +154,7 @@ http:
   port: 8080
 ```
 
-#### Usage with anonymous API
+#### Usage with named API
 
 ```python
 # mymodule.py
