@@ -38,7 +38,7 @@ setup(
     data_files=[],
     python_requires='>=3.6',
     install_requires=[
-        'applipy_http>=1.0.0,<2.0.0',
+        'applipy_http>=1.0.0,<3.0.0',
         'applipy_metrics>=1.0.0,<2.0.0',
     ],
     scripts=[],

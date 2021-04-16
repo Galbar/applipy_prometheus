@@ -22,14 +22,14 @@ is given it defaults to the anonymous server:
 # dev.yaml
 
 app:
-    name: demo
-    modules:
-        - applipy_prometheus.PrometheusModule
+  name: demo
+  modules:
+    - applipy_prometheus.PrometheusModule
 
-http:
-    internal:
-        host: 0.0.0.0
-        port: 8080
+http.servers:
+- name: internal
+  host: 0.0.0.0
+  port: 8080
 
 prometheus.server_name: internal
 ```
@@ -149,8 +149,8 @@ app:
   name: test
   modules: [mymodule.MyModule]
 
-http:
-  host: 0.0.0.0
+http.servers:
+- host: 0.0.0.0
   port: 8080
 ```
 
@@ -184,8 +184,8 @@ app:
   name: test
   modules: [mymodule.MyModule]
 
-http:
-  host: 0.0.0.0
+http.servers:
+- host: 0.0.0.0
   port: 8080
 
 prometheus:
